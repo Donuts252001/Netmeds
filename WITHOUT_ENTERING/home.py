@@ -1,7 +1,8 @@
+# from curses import window
 from selenium import webdriver
 import os
 import constant
-
+from selenium.webdriver.common.keys import Keys
 
 class Home(webdriver.Edge):
     def __init__(self, driver_path=r"C:/Users/vaish/Desktop/Self Learning/Cloud/DEVOPS/SELENIUM",teardown=False):
@@ -22,54 +23,47 @@ class Home(webdriver.Edge):
     def landing(self):
         self.get(constant.link)
         
-    def fitness(self):
-        fit=self.find_element_by_css_selector('a[href="/non-prescriptions/fitness"]')
-        print(fit)
-        fit.click()
-        
-        
-    def filters(self):
-        close=self.find_element_by_id("webklipper-publisher-widget-container-notification-close")
-        close.click()
-        sports=self.find_element_by_css_selector('a[ href="https://www.netmeds.com/non-prescriptions/fitness/sports-supplements"]')
-        print("sports",sports)
-        sports.click()
+    def preq(self):
         pincode=self.find_element_by_id("delivery_details")
         pincode.click()
         enterpin=self.find_element_by_id("rel_pincode")
         enterpin.send_keys('421201')
-        sorting=self.find_element_by_css_selector("div[class='sort-option']")
-        sorts=sorting.find_elements_by_css_selector('*')
-        for sort in sorts:
-            print(sort)
-        self.execute_script("window.scrollTo(0,500)")
-    
-    def lowtohigh(self):
-        sorting=self.find_element_by_css_selector("div[class='sort-option']")
-        sorts=sorting.find_elements_by_css_selector('*')
-        for sort in sorts:
-            print(sort)
-            
+        print('END')
         
-    def products(self):
-        self.find_element_by_xpath('//*[@id="algolia_hits"]/div/div/ol/li[1]')
-        addcart=self.find_element_by_css_selector('button[title="ADD TO CART"]')
-        addcart.click()
+    def searching(self):
+        searchbox=self.find_element_by_css_selector(
+            'input[name="q"]'
+        )
+        searchbox.click()
+        searchbox.send_keys('Sanitiser')
+        searchbox.send_keys(Keys.ENTER)
+    
+    def collecting(self):
+        # self.execute(self.scroll(500))
+        allsearch=self.find_element_by_css_selector(
+            'ol[id="algolia_hits"]'
+        )
+        divs=allsearch.find_elements_by_css_selector('*')
+        for div in divs:
+            name=div.find_element_by_class_name('info').get_attribute('innerHTML').strip()
+            print(name)
+        
+        
+    def adding(self):
+        addbutton=self.find_element_by_css_selector(
+            'button[title="ADD TO CART"]'
+        )
+        addbutton.click()
+        
+    def carting(self):
         cart=self.find_element_by_id("minicart_btn")
         cart.click()
-        proceed=self.find_element_by_class_name("process-checkout")
-        proceed.click()
-        # uploading=self.find_element_by_xpath("/html/body/app-root/app-checkout/div/main/section/div/app-upload-rx/div[1]/div/div[1]/div[1]/div[3]/div/form/button")
-        # uploading.click()
-        # gallery=self.find_element_by_xpath("/html/body/app-root/app-checkout/div/main/section/div/app-upload-rx/div[5]/div/div/div[2]/form/div/ul/li/label/input")
-        # gallery.click()
     
-    def confirm(self):
-        consult=self.find_element_by_id("externaldoctr")
-        consult.click()
-        list=self.find_elements("*")
-        for i in list:
-            if i.innerHTML.strip()=="Review Order":
-                i.click()
+    def proceeding(self):
+        proceed=self.find_element_by_css_selector(
+            'button[class="btn-checkout btn btn_to_checkout"]'
+        )
+        proceed.click()
+            
         
         
